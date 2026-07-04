@@ -252,7 +252,7 @@ watch(
 </script>
 <template>
   <div class="peer-phone-panel">
-    <div>
+    <div class="ring-container">
       <audio ref="calledAudio" :src="calledRing" loop></audio>
       <audio ref="callerAudio" :src="callerRing" loop></audio>
     </div>
