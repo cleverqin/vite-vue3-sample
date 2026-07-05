@@ -139,6 +139,7 @@ function handleCall() {
       })
       .catch((err) => {
         console.log(err)
+        Message.error(err.message || '出错了！')
         state.dataConnection.close()
         handleHangup()
       })
@@ -184,6 +185,7 @@ function handleAnswer() {
     })
     .catch((err) => {
       console.error(err.message)
+      Message.error(err.message || '出错了！')
       handleHangup()
     })
 }
