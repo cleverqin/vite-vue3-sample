@@ -78,9 +78,10 @@ export function useAPlayer(audioRef, STORAGE_KEY = 'FAVORITE_LIST') {
           }
           resolve()
         })
-        .catch(() => {
+        .catch((err) => {
           loading.value = false
           loadingRid.value = null
+          console.log(err)
           reject()
         })
     })
@@ -94,7 +95,7 @@ export function useAPlayer(audioRef, STORAGE_KEY = 'FAVORITE_LIST') {
   }
   function playSong(song) {
     if (loading.value) return
-    changeSong(song).finally(() => {
+    changeSong(song).then(() => {
       audioRef.value.play()
     })
   }
@@ -108,17 +109,13 @@ export function useAPlayer(audioRef, STORAGE_KEY = 'FAVORITE_LIST') {
     }
   }
   function playNext() {
+    const len = songList.value.length
     const index = songList.value.findIndex((item) => item.rid === musicInfo.rid)
-    if (index !== -1) {
-      const nextSong = songList.value[index + 1]
-      if (nextSong) {
-        playSong({ ...nextSong })
-      }
-    } else {
-      const nextSong = songList.value[0]
-      if (nextSong) {
-        playSong({ ...nextSong })
-      }
+    let nextIndex = index + 1
+    nextIndex = nextIndex >= 0 && nextIndex < len ? nextIndex : 0
+    const nextSong = songList.value[nextIndex]
+    if (nextSong) {
+      playSong({ ...nextSong })
     }
   }
   function handleChangeVolume(progress) {

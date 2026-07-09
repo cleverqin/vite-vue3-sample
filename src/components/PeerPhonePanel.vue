@@ -66,11 +66,17 @@ function initPeer() {
   })
   peer.value.on('connection', (dataConnection) => {
     dataConnection.on('data', (e) => {
-      console.log(e)
+      if (e === 'Bye') {
+        console.log('Caller', e)
+        state.status = 'idle'
+        state.isShowModal = false
+        handleHangup(true)
+      }
     })
     dataConnection.on('close', () => {
       state.status = 'idle'
       state.isShowModal = false
+      console.log('close', 'called')
       handleHangup()
     })
     state.dataConnection = dataConnection
@@ -150,20 +156,26 @@ function handleCall() {
     state.status = 'idle'
     handleHangup()
   })
-  state.dataConnection.on('error', (err) => {
-    console.log(err)
-    state.isCalling = false
-  })
   state.dataConnection.on('data', (e) => {
-    console.log(e)
+    if (e === 'Bye') {
+      console.log('Called', e)
+      state.status = 'idle'
+      state.isShowModal = false
+      handleHangup(true)
+    }
   })
 }
 // 挂断电话
-function handleHangup() {
-  state.mediaConnection?.close()
-  state.dataConnection?.close()
-  state.dataConnection = null
-  state.mediaConnection = null
+function handleHangup(isBye = false) {
+  if (state.dataConnection) {
+    if (state.dataConnection.open && isBye) {
+      state.dataConnection.send('Bye')
+    }
+    state.mediaConnection?.close()
+    state.dataConnection?.close()
+    state.dataConnection = null
+    state.mediaConnection = null
+  }
   if (state.localStream) {
     state.localStream.getTracks().forEach((track) => {
       track.stop()
