@@ -10,7 +10,7 @@ export function useAPlayer(audioRef, STORAGE_KEY = 'FAVORITE_LIST') {
     rid: null,
     name: null,
     artist: null,
-    pic: 'http://p2.music.126.net/KK2fyHMit2saFMMMDUfJ3w==/109951164249516600.jpg',
+    pic: 'https://p2.music.126.net/KK2fyHMit2saFMMMDUfJ3w==/109951164249516600.jpg',
     url: null,
     lrc: null,
     volume: 0.5,

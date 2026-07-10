@@ -1,17 +1,21 @@
 <script setup>
 import { computed } from 'vue'
 
-const { size } = defineProps({
+const { size, gap } = defineProps({
   size: {
     type: Number,
     default: 80
+  },
+  gap: {
+    type: Number,
+    default: 40
   }
 })
 const computedStyle = computed(() => {
   return {
     '--box-size': size + 'px',
     '--half-box-size': '-' + size / 2 + 'px',
-    '--max-box-size': (size / 2) * 3 + size + 'px'
+    '--max-box-size': gap * 3 + size + 'px'
   }
 })
 </script>

@@ -157,12 +157,12 @@ const favoriteList = ref([])
 const isShowList = ref(false)
 const isShowLyric = ref(false)
 const isShow = ref(false)
-const defaultPic = ref('http://p2.music.126.net/KK2fyHMit2saFMMMDUfJ3w==/109951164249516600.jpg')
+const defaultPic = ref('https://p2.music.126.net/KK2fyHMit2saFMMMDUfJ3w==/109951164249516600.jpg')
 const musicInfo = reactive({
   rid: null,
   name: null,
   artist: null,
-  pic: 'http://p2.music.126.net/KK2fyHMit2saFMMMDUfJ3w==/109951164249516600.jpg',
+  pic: 'https://p2.music.126.net/KK2fyHMit2saFMMMDUfJ3w==/109951164249516600.jpg',
   url: null,
   lrc: null,
   volume: 0.5,
@@ -906,7 +906,7 @@ $border-color: #333;
   transform: translateX(-50%);
   span {
     color: transparent;
-    background-image: radial-gradient(circle at 50% 50%, #0151fd, #c00267);
+    background-image: linear-gradient(to bottom, #a403f5, #fd0290);
     -webkit-background-clip: text;
     background-clip: text;
     filter: drop-shadow(1px 1px 1px #000);
