@@ -211,7 +211,7 @@ export const useSipPhoneStore = defineStore('sipPhone', {
     sipPhoneDisconnect() {
       this.clearReconnectTimer()
       this.isCanReconnect = false
-      this.userAgent?.stop()
+      userAgent?.stop()
     },
     // 电话连接
     sipPhoneConnect() {

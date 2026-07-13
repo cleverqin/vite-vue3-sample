@@ -2,6 +2,7 @@
 import PeerPhonePanel from '@/components/PeerPhonePanel.vue'
 import WebsocketTestPanel from '@/components/WebsocketTestPanel.vue'
 import SipPhonePanel from '@/components/SipPhonePanel.vue'
+import DragTestPanel from '@/components/DragTestPanel.vue'
 import APlayer from '@/components/APlayer.vue'
 import { ref } from 'vue'
 const curActive = ref('peer-phone')
@@ -20,10 +21,14 @@ function isActive(tabName) {
       <ul class="panel-navs">
         <li class="panel-nav-item" :class="isActive('peer-phone')" @click="changeTab('peer-phone')">PeerPhone</li>
         <li class="panel-nav-item" :class="isActive('sip-phone')" @click="changeTab('sip-phone')">SipPhone</li>
-        <li class="panel-nav-item" :class="isActive('socket-tes')" @click="changeTab('socket-test')">WebsocketTest</li>
+        <li class="panel-nav-item" :class="isActive('socket-test')" @click="changeTab('socket-test')">WebsocketTest</li>
+        <li class="panel-nav-item" :class="isActive('drag-test')" @click="changeTab('drag-test')">Drag Test</li>
       </ul>
     </div>
     <div class="tab-panel-body">
+      <div v-show="curActive === 'drag-test'" class="tab-content-item">
+        <DragTestPanel />
+      </div>
       <div v-show="curActive === 'peer-phone'" class="tab-content-item">
         <PeerPhonePanel />
       </div>
