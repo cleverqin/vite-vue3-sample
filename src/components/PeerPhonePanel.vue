@@ -10,7 +10,7 @@ import Message from '@/components/Message'
 const peer = ref(null)
 const localVideoRef = useTemplateRef('localVideo')
 const remoteVideoRef = useTemplateRef('remoteVideo')
-import callerRing from '../assets/audio/ringback.wav'
+import callerRing from '../assets/audio/ringback.mp3'
 import calledRing from '../assets/audio/71536.aac'
 const callerAudioRef = useTemplateRef('callerAudio')
 const calledAudioRef = useTemplateRef('calledAudio')
@@ -201,6 +201,21 @@ function handleAnswer() {
       handleHangup()
     })
 }
+function handleChangeCameraTrack() {
+  navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(async (stream) => {
+    const newVideoTrack = stream.getVideoTracks()[0]
+    const pc = state.mediaConnection.peerConnection
+    const videoSender = pc.getSenders().find((s) => s.track?.kind === 'video')
+    if (videoSender) {
+      await videoSender.replaceTrack(newVideoTrack)
+    }
+    // 本地预览更新
+    state.localStream.getVideoTracks()[0].stop()
+    state.localStream.removeTrack(state.localStream.getVideoTracks()[0])
+    state.localStream.addTrack(newVideoTrack)
+    localVideoRef.value.srcObject = state.localStream
+  })
+}
 function handleChangeVideoTrack() {
   navigator.mediaDevices.getDisplayMedia({ video: true, audio: false }).then(async (stream) => {
     const newVideoTrack = stream.getVideoTracks()[0]
@@ -275,7 +290,8 @@ watch(
       <MyInput v-model="state.remotePeerId" placeholder="请输入远程连接ID" />
       <MyButton icon="answer" :loading="state.isCalling" :disabled="!isCanCall" @click="handleCall()">呼叫</MyButton>
       <MyButton v-if="['talking', 'ring'].includes(state.status)" icon="hangup" @click="handleHangup()">挂断</MyButton>
-      <MyButton :disabled="state.status !== 'talking'" @click="handleChangeVideoTrack()">切换视频流</MyButton>
+      <MyButton :disabled="state.status !== 'talking'" @click="handleChangeVideoTrack()">共享屏幕</MyButton>
+      <MyButton :disabled="state.status !== 'talking'" @click="handleChangeCameraTrack()">摄像头</MyButton>
     </div>
     <div>peerId: {{ state.peerId }}</div>
     <div class="video-panel">
